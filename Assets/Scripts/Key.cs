@@ -30,11 +30,7 @@ public class Key : MonoBehaviour {
 		this.available = true;
 	}
 
-	protected virtual void Start() {
-//		this.AVAIL_POSITION = transform.localPosition;
-//		this.UNAVAIL_POSITION = transform.localPosition;
-		UNAVAIL_POSITION.z += 0.03f;
-	}
+	protected virtual void Start() {}
 
 	public void AssignAvailPosition() {
 		this.AVAIL_POSITION = transform.localPosition;
@@ -42,6 +38,7 @@ public class Key : MonoBehaviour {
 
 	public void AssignUnavailPosition() {
 		this.UNAVAIL_POSITION = transform.localPosition;
+		this.UNAVAIL_POSITION.z += 0.03f;
 	}
 
 	public Vector3 GetAVAIL() {
@@ -126,11 +123,11 @@ public class Key : MonoBehaviour {
 	public virtual void SetAvailability(bool a) {
 		this.available = a;
 		if (a) {
-			StartCoroutine(MoveToLocalPoint(AVAIL_POSITION));
+			SendKeyToLocal(AVAIL_POSITION);
 			this.myMeshRenderer.material.color = ColorUtilities.AVAILABLE;
 		} else if (!this.pressed) {
 			this.myMeshRenderer.material.color = Color.black;
-			StartCoroutine(MoveToLocalPoint(UNAVAIL_POSITION));
+			SendKeyToLocal(UNAVAIL_POSITION);
 		} 
 	}
 
@@ -141,7 +138,7 @@ public class Key : MonoBehaviour {
 		downNeighbor = down;
 	}
 
-	public void Release() {
+	public virtual void Release() {
 		this.pressed = false;
 	}
 
@@ -156,7 +153,7 @@ public class Key : MonoBehaviour {
 			p.AddToCurrentString(this.val);
 			this.pressed = true;
 			this.myMeshRenderer.material.color = ColorUtilities.PRESSED; //Color.magenta;
-			StartCoroutine(MoveToLocalPoint(UNAVAIL_POSITION));
+			SendKeyToLocal(UNAVAIL_POSITION);
 			p.DetermineAvailability(this);
 		} else {
 			Debug.Log("This key is not available.");

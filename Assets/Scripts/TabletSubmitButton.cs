@@ -6,11 +6,19 @@ public class TabletSubmitButton : SubmitButton {
 
 	private TabletPuzzle myTabletPuzzle;
 
+	void Awake() {
+		SetBoxColliderEnabled(false);
+	}
+
 	// Use this for initialization
 	protected override void Start () {
 		myTabletPuzzle = FindUtilities
 			.TryFind(this.transform.parent.gameObject, "Puzzle")
 			.GetComponent<TabletPuzzle>();
+	}
+
+	public void SetBoxColliderEnabled(bool setting) {
+		GetComponent<BoxCollider>().enabled = setting;
 	}
 
 	protected override void OnMouseUp() {

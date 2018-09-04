@@ -24,7 +24,8 @@ public class TabletPuzzle : Puzzle {
 		this.complete = true;
 		FindUtilities
 			.TryFind(this.transform.parent.gameObject, "SubmitButton")
-			.GetComponent<BoxCollider>().enabled = false;
+			.GetComponent<TabletSubmitButton>()
+			.SetBoxColliderEnabled(false);
 		this.RemoveDoor();
 		FindUtilities
 			.TryFind(this.transform.parent.gameObject, "Block")
@@ -37,6 +38,10 @@ public class TabletPuzzle : Puzzle {
 
 	protected override void ChangeWireChain() {
 		return;
+	}
+	
+	public override void Exit() {
+
 	}
 
 	public void RemovedFromDock() {

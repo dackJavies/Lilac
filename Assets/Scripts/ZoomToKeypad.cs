@@ -52,6 +52,8 @@ public class ZoomToKeypad : MonoBehaviour {
 			GameObject keypad = other.gameObject.transform.parent.gameObject;
 			SavePlayerHeadTransform();
 			FindUtilities.TryFind(keypad.transform.parent.gameObject, "ExitButton").GetComponent<ExitButton>().SetPlayerHead(this.playerHead);
+			FindUtilities.TryFind(keypad.transform.parent.gameObject, "SubmitButton")
+				.GetComponent<BoxCollider>().enabled = true;
 			this.controller.GetComponent<FirstPersonController>().enabled = false;
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
@@ -81,13 +83,11 @@ public class ZoomToKeypad : MonoBehaviour {
 			p.SetEnabledKeys(true);
 		} else if (other.tag == "Dock" && PlayerInventory.HasTablet()) {
 			this.controller.GetComponent<Rigidbody>().velocity = Vector3.zero;
-			Debug.Log("Placing tablet.");
 			PlayerInventory.PlaceTablet(other.gameObject.transform.parent);
 			other.gameObject.GetComponent<Dock>().ReturnTablet();
 		} else if (other.tag == "Tablet" && !PlayerInventory.HasTablet()) {
 			this.controller.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			if (!PlayerInventory.HasTablet()) {
-				Debug.Log("Picking up tablet.");
 				FindUtilities
 					.TryFind(other.gameObject.transform.parent.parent.gameObject, "DockBlock")
 					.GetComponent<Dock>().TakeTablet();

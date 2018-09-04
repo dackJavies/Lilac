@@ -57,6 +57,10 @@ public class PlayerInventory : MonoBehaviour {
 		if (MyTablet != null) {
 			MyTablet.transform.localPosition = new Vector3(0f, 0.35f, 0.8f);
 			TabletPuzzle.SetEnabledKeys(true);
+			FindUtilities.TryFind(MyTablet, "SubmitButton")
+				.GetComponent<TabletSubmitButton>()
+				.SetBoxColliderEnabled(true);
+			Debug.Log("Tablet Submit collider enabled");
 		}
 	}
 
@@ -66,6 +70,10 @@ public class PlayerInventory : MonoBehaviour {
 			MyTablet.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 			MyTablet.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 			TabletPuzzle.SetEnabledKeys(false);
+			FindUtilities.TryFind(MyTablet, "SubmitButton")
+				.GetComponent<TabletSubmitButton>()
+				.SetBoxColliderEnabled(false);
+			Debug.Log("Tablet Submit collider disabled");
 		}
 	}
 
@@ -76,6 +84,10 @@ public class PlayerInventory : MonoBehaviour {
 			copy.y = -0.3f;
 			MyTablet.transform.localPosition = copy;
 			TabletPuzzle.SetEnabledKeys(false);
+			FindUtilities.TryFind(MyTablet, "SubmitButton")
+				.GetComponent<TabletSubmitButton>()
+				.SetBoxColliderEnabled(false);
+			Debug.Log("Tablet Submit collider disabled");
 		}
 	}
 
@@ -85,6 +97,10 @@ public class PlayerInventory : MonoBehaviour {
 			copy.x = 0f;
 			copy.y = 0f;
 			MyTablet.transform.localPosition = copy;
+			FindUtilities.TryFind(MyTablet, "SubmitButton")
+				.GetComponent<TabletSubmitButton>()
+				.SetBoxColliderEnabled(true);
+			Debug.Log("Tablet Submit collider enabled");
 		}
 	}
 
