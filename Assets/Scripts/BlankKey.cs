@@ -16,18 +16,18 @@ public class BlankKey : Key {
 		this.defaultColor = Color.black;
 	}
 
-	new void OnMouseUp() {}
+	protected override void OnMouseUp() {}
 
 	public override void SetAvailability(bool a) {
-		this.available = a;
-		if (a) {
-			StartCoroutine(MoveToLocalPoint(AVAIL_POSITION));
-		} else if (!this.pressed) {
-			StartCoroutine(MoveToLocalPoint(UNAVAIL_POSITION));
-		} 
+		// this.available = a;
+		// if (a) {
+		// 	StartCoroutine(MoveToLocalPoint(AVAIL_POSITION));
+		// } else if (!this.pressed) {
+		// 	StartCoroutine(MoveToLocalPoint(UNAVAIL_POSITION));
+		// } 
 	}
 
-	new public void Release() {}
+	public override void Release() {}
 
 	public override void SetValue(char c) {
 		this.val = c;

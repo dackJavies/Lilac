@@ -11,6 +11,7 @@ public class SubmitButton : MonoBehaviour {
 		myPuzzle = FindUtilities.TryFind(
 			FindUtilities.TryFind(this.transform.parent.gameObject, "Pad"),
 			"Puzzle").GetComponent<Puzzle>();
+		GetComponent<BoxCollider>().enabled = false;
 	}
 	
 	protected virtual void OnMouseUp() {

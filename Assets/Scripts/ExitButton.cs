@@ -61,6 +61,8 @@ public class ExitButton : MonoBehaviour {
 			this.character.transform.localScale = this.playerHead.localScale;
 			Hint.ClearHint();
 			this.controller.GetComponent<ZoomToTablet>().enabled = true;
+			FindUtilities.TryFind(transform.parent.gameObject, "SubmitButton")
+				.GetComponent<BoxCollider>().enabled = false;
 		}
 	}
 
