@@ -23,8 +23,6 @@ public class Key : MonoBehaviour {
 	protected Vector3 AVAIL_POSITION;
 	protected Vector3 UNAVAIL_POSITION;
 
-
-	// Use this for initialization
 	protected virtual void Awake () {
 		this.myMeshRenderer = this.gameObject.GetComponent<MeshRenderer>();
 		this.available = true;
@@ -155,8 +153,6 @@ public class Key : MonoBehaviour {
 			this.myMeshRenderer.material.color = ColorUtilities.PRESSED; //Color.magenta;
 			SendKeyToLocal(UNAVAIL_POSITION);
 			p.DetermineAvailability(this);
-		} else {
-			Debug.Log("This key is not available.");
 		}
 	}
 
@@ -200,17 +196,6 @@ public class Key : MonoBehaviour {
 			yield return null;
 		}
 		this.transform.localPosition = destination;
-	}
-
-	protected IEnumerator MoveToPoint(Vector3 destination) {
-		float timeRemaining = MOVE_TIME;
-		for(float i = 0; i < MOVE_TIME; i += Time.deltaTime) {
-			this.transform.position +=
-				CalculateMovementDelta(destination, timeRemaining);
-			timeRemaining -= Time.deltaTime;
-			yield return null;
-		}
-		this.transform.position = destination;
 	}
 
 	protected IEnumerator MorphToScale(Vector3 scale) {

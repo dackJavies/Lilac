@@ -18,8 +18,6 @@ public class DetachableKey : Key {
     protected override void OnMouseUp() {
         if (!KeyUtilities.DetectIfOnGift(this)) {
             base.OnMouseUp();
-        } else {
-            Debug.Log("Can't press on gift");
         }
     }
 

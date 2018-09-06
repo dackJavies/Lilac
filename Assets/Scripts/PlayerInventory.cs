@@ -10,6 +10,10 @@ public class PlayerInventory : MonoBehaviour {
 	private static GameObject MyTablet;
 	private static TabletPuzzle TabletPuzzle;
 
+	private static Vector2 BACK_TO_WALKING_POSITION = new Vector2(0.3f, -0.3f);
+	private static Vector2 SOLVING_POSITION = new Vector2(0f, 0f);
+	private static Vector3 PUZZLE_POSITION = new Vector3(0f, 0.35f, 0.8f);
+
 
 	void Start() {
 		PlayerInventory.MyTablet = null;
@@ -44,9 +48,9 @@ public class PlayerInventory : MonoBehaviour {
 
 	public static void PlaceTablet(Transform dock) {
 		MyTablet.transform.parent = dock;
-		MyTablet.transform.localPosition = new Vector3(0f, 0f, 0f);
-		MyTablet.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-		MyTablet.transform.localScale = new Vector3(1f, 1f, 1f);
+		MyTablet.transform.localPosition = Vector3.zero;
+		MyTablet.transform.localEulerAngles = Vector3.zero;
+		MyTablet.transform.localScale = Vector3.one;
 		TabletPuzzle.PlacedOnDock();
 		MyTablet = null;
 		TabletPuzzle = null;
@@ -55,12 +59,11 @@ public class PlayerInventory : MonoBehaviour {
 
 	public static void PuzzleView() {
 		if (MyTablet != null) {
-			MyTablet.transform.localPosition = new Vector3(0f, 0.35f, 0.8f);
+			MyTablet.transform.localPosition = SOLVING_POSITION;
 			TabletPuzzle.SetEnabledKeys(true);
 			FindUtilities.TryFind(MyTablet, "SubmitButton")
 				.GetComponent<TabletSubmitButton>()
 				.SetBoxColliderEnabled(true);
-			Debug.Log("Tablet Submit collider enabled");
 		}
 	}
 
@@ -73,35 +76,29 @@ public class PlayerInventory : MonoBehaviour {
 			FindUtilities.TryFind(MyTablet, "SubmitButton")
 				.GetComponent<TabletSubmitButton>()
 				.SetBoxColliderEnabled(false);
-			Debug.Log("Tablet Submit collider disabled");
 		}
 	}
 
 	public static void BackToWalkingView() {
 		if (MyTablet != null) {
-			Vector3 copy = MyTablet.transform.localPosition;
-			copy.x = 0.3f;
-			copy.y = -0.3f;
-			MyTablet.transform.localPosition = copy;
-			TabletPuzzle.SetEnabledKeys(false);
-			FindUtilities.TryFind(MyTablet, "SubmitButton")
-				.GetComponent<TabletSubmitButton>()
-				.SetBoxColliderEnabled(false);
-			Debug.Log("Tablet Submit collider disabled");
+			ToggleSolvingView(false);
 		}
 	}
 
 	public static void SolvingView() {
 		if (MyTablet != null) {
+			ToggleSolvingView(true);
+		}
+	}
+
+	private static void ToggleSolvingView(bool solving) {
 			Vector3 copy = MyTablet.transform.localPosition;
-			copy.x = 0f;
-			copy.y = 0f;
+			copy.x = solving ? SOLVING_POSITION.x : BACK_TO_WALKING_POSITION.x;
+			copy.y = solving ? SOLVING_POSITION.y : BACK_TO_WALKING_POSITION.y;
 			MyTablet.transform.localPosition = copy;
 			FindUtilities.TryFind(MyTablet, "SubmitButton")
 				.GetComponent<TabletSubmitButton>()
 				.SetBoxColliderEnabled(true);
-			Debug.Log("Tablet Submit collider enabled");
-		}
 	}
 
 	public static Puzzle GetPuzzle() {

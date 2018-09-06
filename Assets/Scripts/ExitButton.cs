@@ -54,7 +54,6 @@ public class ExitButton : MonoBehaviour {
 				}
 			}
 			this.controller.GetComponent<FirstPersonController>().enabled = true;
-			//this.clickCollider.GetComponent<BoxCollider>().enabled = true;
 			this.character.transform.parent = controller.transform;
 			this.character.transform.localPosition = this.playerHead.localPosition;
 			this.character.transform.localEulerAngles = this.playerHead.localEulerAngles;

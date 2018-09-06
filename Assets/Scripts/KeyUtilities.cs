@@ -22,16 +22,20 @@ public class KeyUtilities : MonoBehaviour {
     {
         F fromKey = keyObject.GetComponent<F>();
         fromKey.ResetPressed();
+
         char val = fromKey.GetValue();
         int row = fromKey.GetRow();
         int col = fromKey.GetCol();
+
         bool left = fromKey.LeftAvailable();
         bool right = fromKey.RightAvailable();
         bool up = fromKey.UpAvailable();
         bool down = fromKey.DownAvailable();
+
         bool pressed = fromKey.IsPressed();
         Vector3 oldAvail = fromKey.GetAVAIL();
         Vector3 oldUnavail = fromKey.GetUNAVAIL();
+
         Object.Destroy(fromKey);
         keyObject.AddComponent(typeof(T));
         T toKey = keyObject.GetComponent<T>();
