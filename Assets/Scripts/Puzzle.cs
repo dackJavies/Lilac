@@ -83,7 +83,6 @@ public class Puzzle : MonoBehaviour {
 	public bool TestSubmission() {
 		if (Contains(words, currentString.text)) {
 			if (Contains(foundWords, currentString.text)) {
-				Debug.Log("already submitted");
 				return false;
 			}
 			Hint.FoundWord(currentString.text);

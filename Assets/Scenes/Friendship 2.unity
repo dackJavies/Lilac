@@ -27515,7 +27515,7 @@ Prefab:
         type: 2}
       propertyPath: wireChain
       value: 
-      objectReference: {fileID: 2075846911}
+      objectReference: {fileID: 0}
     - target: {fileID: 4400826706100630, guid: 97074dc63968f49f3b7ff49ef7c84b8c, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -27553,6 +27553,16 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 87b401de4d7c1457896c4d311ef9af13, type: 2}
+    - target: {fileID: 114056427741603590, guid: 97074dc63968f49f3b7ff49ef7c84b8c,
+        type: 2}
+      propertyPath: words.Array.data[0]
+      value: think
+      objectReference: {fileID: 0}
+    - target: {fileID: 114056427741603590, guid: 97074dc63968f49f3b7ff49ef7c84b8c,
+        type: 2}
+      propertyPath: keys
+      value: ththihknk
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 97074dc63968f49f3b7ff49ef7c84b8c, type: 2}
   m_IsPrefabParent: 0
@@ -50781,7 +50791,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: be543f6ebd1c0411db51a9e573f39682, type: 3}
+  - {fileID: 2100000, guid: 87b401de4d7c1457896c4d311ef9af13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
