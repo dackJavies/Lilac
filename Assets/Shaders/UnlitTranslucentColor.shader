@@ -1,7 +1,7 @@
 ﻿Shader "Unlit/Translucent Color" {
 	Properties {
 		_PrimaryTexture ("Primary Texture", 2D) = "white" {}
-		_BaseColor 		("Base Color", Color) = (1, 1, 1, 1)
+		_Color 		("Base Color", Color) = (1, 1, 1, 1)
 	}
  
 	SubShader {
@@ -17,7 +17,7 @@
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass {
-			Color [_BaseColor]
+			Color [_Color]
 			SetTexture [_PrimaryTexture] {
 				combine Primary, Texture * Primary
 			}

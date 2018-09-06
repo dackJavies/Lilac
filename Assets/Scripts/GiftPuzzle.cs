@@ -9,7 +9,7 @@ public class GiftPuzzle : Puzzle {
 			.TryFind(this.transform.parent.gameObject, "Block")
 			.GetComponent<Block>();
 		InitializeBoard();
-		FillBoardTwo();
+		FillBoard();
 		SetEnabledKeys(false);
 	}
 

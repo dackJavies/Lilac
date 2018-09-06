@@ -38,9 +38,7 @@ public class Puzzle : MonoBehaviour {
 		foundIndex = 0;
 		ClearCurrentString();
 		InitializeBoard();
-		//FillBoard();
-		FillBoardTwo();
-		SetEnabledKeys(false);
+		FillBoard();
 		this.complete = false;
 	}
 
@@ -52,7 +50,6 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	protected virtual void CompleteBuildUp() {
-//		Debug.Log(Hint.GetHintText());
 		FindUtilities
 			.TryFind(this.transform.parent.parent.parent.gameObject, "BuildUp")
 			.GetComponent<TextMesh>()
@@ -69,10 +66,6 @@ public class Puzzle : MonoBehaviour {
 		return this.complete;
 	}
 	
-	public void SetComplete(bool c) {
-		this.complete = c;
-	}
-
 	public bool HasLeftovers() {
 		if (!complete) {
 			return false;
@@ -132,7 +125,6 @@ public class Puzzle : MonoBehaviour {
 
 	public virtual void CompletePuzzle() {
 		this.complete = true;
-		Debug.Log("found all words");
 		ChangeWireChain();
 		CompleteBuildUp();
 		if (PlayerInventory.HasTablet()) {
@@ -149,7 +141,7 @@ public class Puzzle : MonoBehaviour {
 		RemoveDoor();
 		FindUtilities
 			.TryFind(transform.parent.gameObject, "Block")
-			.GetComponent<MeshRenderer>().material.color = ColorUtilities.SOLVED; //Color.green;
+			.GetComponent<MeshRenderer>().material.color = ColorUtilities.SOLVED;
 		Exit();
 	}
 
@@ -169,8 +161,7 @@ public class Puzzle : MonoBehaviour {
 						);
 						ResetBoardAt(blankOriginal.GetRow(), blankOriginal.GetCol(), blankOriginal);
 						Key k = PlayerInventory.GetPuzzle().GetKeyAt(firstBlank);
-						Vector3 dest = k.transform.position;
-						cloneKey.AutoPickUp(dest);
+						cloneKey.AutoPickUp(k.transform.position);
 						return;
 					}
 				}
@@ -207,9 +198,6 @@ public class Puzzle : MonoBehaviour {
 	public void SetEnabledKeys(bool setting) {
 		for(int i = 0; i < board.GetLength(0); i++) {
 			for(int j = 0; j < board.GetLength(1); j++) {
-				if (board[i, j] == null) {
-					Debug.Log("nope: " + i.ToString() + ", " + j.ToString());
-				}
 				if (!complete) {
 					board[i, j].enabled = setting;
 				}
@@ -253,25 +241,28 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	public void DetermineAvailability(Key pressed) {
+		bool sameRow, sameCol;
 		for(int i = 0; i < board.GetLength(0); i++) {
+			sameRow = i == pressed.GetRow();
 			for(int j = 0; j < board.GetLength(1); j++) {
+				sameCol = j == pressed.GetCol();
 				if (board[i, j].IsPressed()) {
 					board[i, j].SetAvailability(false);
 					continue;
 				}
-				if (j == pressed.GetCol() - 1 && i == pressed.GetRow() && pressed.LeftAvailable()) {
+				if (j == pressed.GetCol() - 1 && sameRow && pressed.LeftAvailable()) {
 					board[i, j].SetAvailability(true);
 					continue;
 				}
-				if (j == pressed.GetCol() + 1 && i == pressed.GetRow() && pressed.RightAvailable()) {
+				if (j == pressed.GetCol() + 1 && sameRow && pressed.RightAvailable()) {
 					board[i, j].SetAvailability(true);
 					continue;
 				}
-				if (i == pressed.GetRow() - 1 && j == pressed.GetCol() && pressed.UpAvailable()) {
+				if (i == pressed.GetRow() - 1 && sameCol && pressed.UpAvailable()) {
 					board[i, j].SetAvailability(true);
 					continue;
 				}
-				if (i == pressed.GetRow() + 1 && j == pressed.GetCol() && pressed.DownAvailable()) {
+				if (i == pressed.GetRow() + 1 && sameCol && pressed.DownAvailable()) {
 					board[i, j].SetAvailability(true);
 					continue;
 				}
@@ -282,7 +273,7 @@ public class Puzzle : MonoBehaviour {
 		}
 	}
 
-	protected void FillBoardTwo() {
+	protected void FillBoard() {
 
 		float leftMargin = MyBlock.LeftMargin;
 		float rightMargin = MyBlock.RightMargin;
@@ -299,11 +290,10 @@ public class Puzzle : MonoBehaviour {
 		GameObject currentKey;
 		Vector3 relativePosition = new Vector3(0f, 0f, 0f);
 
-		int row, col;
-		bool left, right, up, down;
+		int currentRow, currentCol;
+		bool neighborToLeft, neighborToRight, neighborAbove, neighborBelow;
 		int pseudoIndex = 0;
 		bool nextDetachable = false;
-		bool currentIsBlank = false;
 
 		for(int i = 0; i < keys.Length; i++) {
 			switch(keys[i]) {
@@ -312,95 +302,52 @@ public class Puzzle : MonoBehaviour {
 					break;
 				
 				default:
-					if (keys[i] == '_') {
-						currentIsBlank = true;
-					}
-					row = pseudoIndex / width;
-					col = pseudoIndex % width;
 					if (nextDetachable) {
 						currentKey = Object.Instantiate(detachableKey, this.transform);
 						nextDetachable = false;
-					} else if(currentIsBlank) {
+					} else if(keys[i] == '_') {
 						currentKey = Object.Instantiate(blankKey, this.transform);
 					} else {
 						currentKey = Object.Instantiate(key, this.transform);
 					}
+
+					currentRow = pseudoIndex / width;
+					currentCol = pseudoIndex % width;
+					board[currentRow, currentCol] = currentKey.GetComponent<Key>();
+					board[currentRow, currentCol].SetRow(currentRow);
+					board[currentRow, currentCol].SetCol(currentCol);
+					board[currentRow, currentCol].SetValue(keys[i]);
+
 					relativePosition.x = (leftMargin 
-											+ (col * placementSpacer.x)
+											+ (currentCol * placementSpacer.x)
 											+ key.transform.localScale.x / 2)
 										 - this.MyBlock.GetWidthDivider();
 					relativePosition.y = ((0 - topMargin)
-											- (row * placementSpacer.y)
+											- (currentRow * placementSpacer.y)
 											- key.transform.localScale.y / 2)
 										 + this.MyBlock.GetHeightDivider();
 					relativePosition.z = 
 						0 - (this.MyBlock.transform.localScale.z / 2) 
 						  - (this.key.transform.localScale.z / 2);
-					currentKey.transform.localPosition = relativePosition;
-					if (keys[i] != '_') {
-						currentKey.GetComponent<Key>().SetValue(keys[i]);
-					}
-					board[row, col] = currentKey.GetComponent<Key>();
-					left = col > 0;
-					right = col < width - 1;
-					up = row > 0;
-					down = row < height - 1;
-					board[row, col].SetNeighbors(left, right, up, down);
-					board[row, col].SetRow(row);
-					board[row, col].SetCol(col);
-					board[row, col].AssignAvailPosition();
-					board[row, col].AssignUnavailPosition();
+					board[currentRow, currentCol].transform.localPosition = relativePosition;
+
+					neighborToLeft = currentCol > 0;
+					neighborToRight = currentCol < width - 1;
+					neighborAbove = currentRow > 0;
+					neighborBelow = currentRow < height - 1;
+					board[currentRow, currentCol].SetNeighbors(neighborToLeft, neighborToRight, neighborAbove, neighborBelow);
+
+					board[currentRow, currentCol].AssignAvailPosition();
+					board[currentRow, currentCol].AssignUnavailPosition();
+
 					pseudoIndex += 1;
-					currentIsBlank = false;
 					break;
 			}
 		}
 
 	}
 
-	protected void FillBoard() {
-		GameObject current = null;
-		Vector3 relativePosition = new Vector3(0f, 0f, 0f);
-		int row, col;
-		bool left, right, up, down;
-		int pseudoIndex = 0;
-		bool nextDetachable = false;
-		for(int i = 0; i < keys.Length; i++) {
-			if (keys[i] == '\'') {
-				nextDetachable = true;
-				continue;
-			} else {
-				row = pseudoIndex / width;
-				col = pseudoIndex % width;
-				if (keys[i] == '_') {
-					current = Object.Instantiate(blankKey, this.transform);
-				} else {
-					current = nextDetachable ? 
-								Object.Instantiate(detachableKey, this.transform) :
-								Object.Instantiate(key, this.transform);
-				}
-				relativePosition.z = col * -0.2f;
-				relativePosition.y = row * -0.2f; 
-				current.transform.localPosition = relativePosition;
-				if (keys[i] != '_') {
-					current.GetComponent<Key>().SetValue(keys[i]);
-				}
-				board[row, col] = current.GetComponent<Key>();
-				left = col > 0;
-				right = col < width - 1;
-				up = row > 0;
-				down = row < height - 1;
-				board[row, col].SetNeighbors(left, right, up, down);
-				board[row, col].SetRow(row);
-				board[row, col].SetCol(col);
-				nextDetachable = false;
-				pseudoIndex += 1;
-			}
-		}
-	}
-
 	public void ResetBoardAt(int row, int col, Key newKey) {
-		Debug.Log("RESETTING: (" + row.ToString() + ", " + col.ToString() + ")");
 		this.board[row, col] = newKey;
 	}
 

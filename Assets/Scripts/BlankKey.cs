@@ -18,14 +18,7 @@ public class BlankKey : Key {
 
 	protected override void OnMouseUp() {}
 
-	public override void SetAvailability(bool a) {
-		// this.available = a;
-		// if (a) {
-		// 	StartCoroutine(MoveToLocalPoint(AVAIL_POSITION));
-		// } else if (!this.pressed) {
-		// 	StartCoroutine(MoveToLocalPoint(UNAVAIL_POSITION));
-		// } 
-	}
+	public override void SetAvailability(bool a) {}
 
 	public override void Release() {}
 

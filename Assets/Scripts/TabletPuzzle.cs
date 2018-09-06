@@ -6,13 +6,6 @@ public class TabletPuzzle : Puzzle {
 
 	public GameObject LinkedDoor;
 
-	/*public override FoundWord() {
-		foundWords[foundIndex++] = currentString.text;
-		if (foundIndex >= words.Length) {
-			this.CompletePuzzle();
-		}
-	}*/
-
 	protected override void ShowBuildUp() {
 		FindUtilities
 			.TryFind(this.LinkedDoor.transform.parent.gameObject, "BuildUp")
