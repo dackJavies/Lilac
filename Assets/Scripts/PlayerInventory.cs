@@ -59,7 +59,7 @@ public class PlayerInventory : MonoBehaviour {
 
 	public static void PuzzleView() {
 		if (MyTablet != null) {
-			MyTablet.transform.localPosition = SOLVING_POSITION;
+			MyTablet.transform.localPosition = PUZZLE_POSITION;
 			TabletPuzzle.SetEnabledKeys(true);
 			FindUtilities.TryFind(MyTablet, "SubmitButton")
 				.GetComponent<TabletSubmitButton>()

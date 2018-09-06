@@ -16,7 +16,7 @@ public class DetachableKey : Key {
     }
 
     protected override void OnMouseUp() {
-        if (!KeyUtilities.DetectIfOnGift(this)) {
+        if (!KeyUtilities.DetectIfOnGift(this) && !transform.parent.GetComponent<Puzzle>().IsComplete()) {
             base.OnMouseUp();
         }
     }
