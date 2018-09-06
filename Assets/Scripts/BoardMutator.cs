@@ -22,14 +22,22 @@ public class BoardMutator : MonoBehaviour {
 			mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(mouseRay, out hit, 2.0f)) {
 				if (hit.collider.tag == "DetachableKey") {
-					PickUpKey(hit.collider.gameObject);
+					DetachableKey dk = hit.collider.GetComponent<DetachableKey>();
+					if (!dk.IsPressed()) {
+						PickUpKey(dk.gameObject);
+					}
 				}
 			}
 		} else if (Input.GetMouseButtonUp(1)) {
 			mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(mouseRay, out hit, 2.0f)) {
 				if (hit.collider.tag == "DetachableKey") {
-					SwapKeys(hit.collider.gameObject);
+					DetachableKey dk = hit.collider.GetComponent<DetachableKey>();
+					if (!dk.IsPressed()) {
+						SwapKeys(dk.gameObject);
+					} else {
+						DropKey();
+					}
 				} else if (hit.collider.tag == "BlankKey") {
 					PutDownKey(hit.collider.gameObject);
 				} else {
