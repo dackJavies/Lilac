@@ -35,6 +35,8 @@ public class BoardMutator : MonoBehaviour {
 					DetachableKey dk = hit.collider.GetComponent<DetachableKey>();
 					if (!dk.IsPressed()) {
 						SwapKeys(dk.gameObject);
+					} else {
+						DropKey();
 					}
 				} else if (hit.collider.tag == "BlankKey") {
 					PutDownKey(hit.collider.gameObject);
