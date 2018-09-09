@@ -26,7 +26,7 @@ public class ZoomToKeypad : MonoBehaviour {
 		if (Input.GetMouseButtonUp(0)) {
 			mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(mouseRay, out hit, 2.0f)) {
-				Debug.Log("hit something or other: " + hit.collider.tag);
+//				Debug.Log("hit something or other: " + hit.collider.tag);
 				Interact(hit.collider);
 			} else {
 				if (this.character.transform.parent != this.controller.transform) {
