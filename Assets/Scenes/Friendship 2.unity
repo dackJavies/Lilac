@@ -19692,7 +19692,8 @@ Prefab:
       propertyPath: m_MouseLook.YSensitivity
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114200349412653058, guid: 7ebfdfb912aa6494aa29b61c3e2d1c20, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 7ebfdfb912aa6494aa29b61c3e2d1c20, type: 2}
   m_IsPrefabParent: 0
 --- !u!20 &577167383 stripped
