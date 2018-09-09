@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GiftPuzzle : Puzzle {
 
-	protected override void Start() {
+	protected override void Awake() {
 		this.MyBlock = FindUtilities
 			.TryFind(this.transform.parent.gameObject, "Block")
 			.GetComponent<Block>();
@@ -12,6 +12,8 @@ public class GiftPuzzle : Puzzle {
 		FillBoard();
 		SetEnabledKeys(false);
 	}
+
+	protected override void Start() {}
 
 	protected override void ShowBuildUp() {}
 

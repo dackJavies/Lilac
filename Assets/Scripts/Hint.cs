@@ -20,6 +20,7 @@ public class Hint : MonoBehaviour {
 	}
 
 	public static void SetHint(string buildUp, string[] words) {
+		Debug.Log(words.Length);
 		Hint.buildUp = buildUp;
 		Hint.words = words;
 		display = new string[words.Length];
@@ -46,6 +47,7 @@ public class Hint : MonoBehaviour {
 	}
 
 	public static void ClearHint() {
+		Debug.Log("CLEAR");
 		words = null;
 		display = null;
 //		myText.text = "";
@@ -55,6 +57,10 @@ public class Hint : MonoBehaviour {
 	}
 
 	public static void FoundWord(string word) {
+		if (words == null) {
+			RefreshDisplay();
+			return;
+		}
 		for(int i = 0; i < words.Length; i++) {
 			if (word == words[i]) {
 				display[i] = words[i];

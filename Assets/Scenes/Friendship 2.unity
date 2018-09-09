@@ -27563,6 +27563,11 @@ Prefab:
       propertyPath: keys
       value: ththihknk
       objectReference: {fileID: 0}
+    - target: {fileID: 23761472701194946, guid: 97074dc63968f49f3b7ff49ef7c84b8c,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 97074dc63968f49f3b7ff49ef7c84b8c, type: 2}
   m_IsPrefabParent: 0

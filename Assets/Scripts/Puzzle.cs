@@ -15,7 +15,8 @@ public class Puzzle : MonoBehaviour {
 	public GameObject wireChain;
 
 	protected Key[,] board;
-	protected TextMesh currentString;
+	protected TextMesh currentStringMesh;
+	protected string currentStringActual;
 	protected string[] foundWords;
 	protected int foundIndex;
 	protected bool complete;
@@ -24,7 +25,7 @@ public class Puzzle : MonoBehaviour {
 	protected Block MyBlock;
 
 	// Use this for initialization
-	protected virtual void Start () {
+	protected virtual void Awake () {
 
 		this.MyBlock = FindUtilities.TryFind(this.transform.parent.gameObject, "Block")
 						.GetComponent<Block>();
@@ -32,14 +33,19 @@ public class Puzzle : MonoBehaviour {
 
 		ShowBuildUp();
 
-		currentString = FindUtilities.TryFind(this.gameObject, "Current String")
-							.GetComponent<TextMesh>();
 		foundWords = new string[words.Length];
 		foundIndex = 0;
-		ClearCurrentString();
 		InitializeBoard();
 		FillBoard();
 		this.complete = false;
+		SetEnabledKeys(false);
+	}
+
+	protected virtual void Start() {
+		currentStringMesh = FindUtilities
+			.TryFind(this.gameObject, "Current String")
+			.GetComponent<TextMesh>();
+		ClearCurrentString();
 	}
 
 	protected virtual void ShowBuildUp() {
@@ -81,13 +87,17 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	public bool TestSubmission() {
-		if (Contains(words, currentString.text)) {
-			if (Contains(foundWords, currentString.text)) {
+//		if (Contains(words, currentStringMesh.text)) {
+		if (Contains(words, currentStringActual)) {
+			if (Contains(foundWords, currentStringMesh.text)) {
+				currentStringActual = "";
 				return false;
 			}
-			Hint.FoundWord(currentString.text);
+			Hint.FoundWord(currentStringMesh.text);
+			currentStringActual = "";
 			return true;
 		}
+		currentStringActual = "";
 		return false;
 	}
 
@@ -116,7 +126,8 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	public void FoundWord() {
-		foundWords[foundIndex++] = currentString.text;
+		foundWords[foundIndex++] = currentStringMesh.text;
+		currentStringActual = "";
 		if (foundIndex >= words.Length) {
 			CompletePuzzle();
 		}
@@ -184,7 +195,7 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	public virtual void ClearCurrentString() {
-		currentString.text = "";
+		currentStringMesh.text = "";
 	}
 
 	public virtual void Exit() {
@@ -212,7 +223,8 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	public void AddToCurrentString(char c) {
-		currentString.text += c;
+		currentStringMesh.text += c;
+		currentStringActual += c;
 	}
 
 	public void ReleaseAllKeys() {
@@ -225,7 +237,7 @@ public class Puzzle : MonoBehaviour {
 		}
 	}
 
-	public void LockKeys() { // LOOK HERE FOR BEING ABLE TO CLICC DETACHABLES AFTER SOLVING
+	public void LockKeys() {
 		for(int i = 0; i < board.GetLength(0); i++) {
 			for(int j = 0; j < board.GetLength(1); j++) {
 				if (board[i, j].tag != "DetachableKey") {
