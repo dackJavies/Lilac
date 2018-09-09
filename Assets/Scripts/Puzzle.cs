@@ -93,7 +93,8 @@ public class Puzzle : MonoBehaviour {
 				currentStringActual = "";
 				return false;
 			}
-			Hint.FoundWord(currentStringMesh.text);
+			Hint.FoundWord(currentStringActual);
+			FoundWord();
 			currentStringActual = "";
 			return true;
 		}
