@@ -112,6 +112,9 @@ public class Puzzle : MonoBehaviour {
 						ref keyObject, ColorUtilities.NORMAL, "NormalKey"
 					);
 					ResetBoardAt(nk.GetRow(), nk.GetCol(), nk);
+					if (complete) {
+						nk.Lock();
+					}
 				}
 			}
 		}
@@ -128,6 +131,7 @@ public class Puzzle : MonoBehaviour {
 
 	public void FoundWord() {
 		foundWords[foundIndex++] = currentStringMesh.text;
+		ConvertPressedDetachablesToVanilla();
 		currentStringActual = "";
 		if (foundIndex >= words.Length) {
 			CompletePuzzle();
@@ -159,7 +163,7 @@ public class Puzzle : MonoBehaviour {
 	public virtual void CollectUnusedDetachables() {
 		for(int i = 0; i < board.GetLength(0); i++) {
 			for(int j = 0; j < board.GetLength(1); j++) {
-				if (board[i, j].gameObject.tag == "DetachableKey") {
+				if (board[i, j].gameObject.tag == "DetachableKey" && !board[i, j].IsPressed()) {
 					int firstBlank = PlayerInventory.FindFirstBlank();
 					if (firstBlank > -1) {
 						GameObject original = board[i, j].gameObject;
@@ -245,8 +249,10 @@ public class Puzzle : MonoBehaviour {
 					board[i, j].Lock();
 					board[i, j].SetAvailability(false);
 				} else {
-					board[i, j].Release();
-					board[i, j].ReturnToDefaultColor();
+					if (!board[i, j].IsPressed()) {
+						board[i, j].Release();
+						board[i, j].ReturnToDefaultColor();
+					}
 				}
 			}
 		}
