@@ -19,8 +19,6 @@ public class SubmitButton : MonoBehaviour {
 			return;
 		}
 		if (myPuzzle.TestSubmission()) {
-			myPuzzle.ConvertPressedDetachablesToVanilla();
-			//myPuzzle.FoundWord();
 			if (!myPuzzle.IsComplete()) {
 				this.myPuzzle.ReleaseAllKeys();
 			}
